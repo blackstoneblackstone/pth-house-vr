@@ -22,6 +22,14 @@ export default defineConfig({
         {
           src: 'vendor/**/*',
           dest: 'vendor'
+        },
+        {
+          src: 'data.js',
+          dest: '.'
+        },
+        {
+          src: 'index.js',
+          dest: '.'
         }
       ]
     })
