@@ -2,7 +2,7 @@
   "name": "pth-house-vr",
   "compatibility_date": "2025-12-04",
   "assets": {
-    "directory": "./"
+    "directory": "./public"
   }
 }
 
