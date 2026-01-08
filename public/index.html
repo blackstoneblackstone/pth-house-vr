@@ -115,13 +115,14 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(0, 212, 255, 0.2);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             text-decoration: none;
             color: inherit;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
             animation: fadeInUp 0.8s ease-out backwards;
             cursor: pointer;
+            display: block;
         }
 
         .house-item:nth-child(1) { animation-delay: 0.1s; }
@@ -181,17 +182,34 @@
         }
 
         .house-icon {
-            width: 80px;
-            height: 80px;
+            width: 100%;
+            height: 220px;
             margin: 0 auto 20px;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(168, 85, 247, 0.2));
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.1));
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .house-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.4s ease;
+            display: block;
+        }
+
+        .house-item:hover .house-icon img {
+            transform: scale(1.08);
+        }
+
+        .house-item:hover .house-icon {
+            border-color: rgba(0, 212, 255, 0.5);
         }
 
         .house-icon::before {
@@ -203,6 +221,7 @@
             height: 200%;
             background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             animation: shine 3s infinite;
+            z-index: 1;
         }
 
         @keyframes shine {
@@ -283,7 +302,11 @@
             }
 
             .house-item {
-                padding: 25px;
+                padding: 20px;
+            }
+
+            .house-icon {
+                height: 180px;
             }
         }
 
@@ -299,35 +322,45 @@
 
         <ul class="house-list">
             <a href="FLIP-A-L20/" class="house-item">
-                <div class="house-icon">🏡</div>
+                <div class="house-icon">
+                    <img src="image/a.png" alt="FLIP-A-L20">
+                </div>
                 <div class="house-name">FLIP-A-L20</div>
                 <div class="house-desc">Refined Layout · Panoramic Experience</div>
                 <div class="house-badge">Click to Enter →</div>
             </a>
 
-            <a href="FLIP-B/" class="house-item">
-                <div class="house-icon">🏘️</div>
-                <div class="house-name">FLIP-B</div>
+            <a href="FLIP-B-H20/" class="house-item">
+                <div class="house-icon">
+                    <img src="image/b.png" alt="FLIP-B">
+                </div>
+                <div class="house-name">FLIP-B-H20</div>
                 <div class="house-desc">Classic Design · Immersive Browsing</div>
                 <div class="house-badge">Click to Enter →</div>
             </a>
 
             <a href="FLIP-Lite-H30/" class="house-item">
-                <div class="house-icon">🏛️</div>
+                <div class="house-icon">
+                    <img src="image/lite.png" alt="FLIP-Lite-H30">
+                </div>
                 <div class="house-name">FLIP-Lite-H30</div>
                 <div class="house-desc">Light Luxury Style · 360° Exploration</div>
                 <div class="house-badge">Click to Enter →</div>
             </a>
 
             <a href="FLIP-MINI-H20/" class="house-item">
-                <div class="house-icon">🏚️</div>
+                <div class="house-icon">
+                    <img src="image/mini.png" alt="FLIP-MINI-H20">
+                </div>
                 <div class="house-name">FLIP-MINI-H20</div>
                 <div class="house-desc">Mini Layout · Panoramic Display</div>
                 <div class="house-badge">Click to Enter →</div>
             </a>
 
             <a href="FLIP-MIX-H20/" class="house-item">
-                <div class="house-icon">🏗️</div>
+                <div class="house-icon">
+                    <img src="image/mix.png" alt="FLIP-MIX-H20">
+                </div>
                 <div class="house-name">FLIP-MIX-H20</div>
                 <div class="house-desc">Mixed Style · Virtual Tour</div>
                 <div class="house-badge">Click to Enter →</div>
