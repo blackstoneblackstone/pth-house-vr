@@ -177,20 +177,7 @@
             min-height: 100vh;
         }
 
-        /* Accessibility - Skip Link & Visually Hidden */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--primary);
-            color: #000;
-            padding: 8px 16px;
-            z-index: 100000;
-            transition: top 0.3s;
-        }
-        .skip-link:focus {
-            top: 0;
-        }
+        /* Accessibility - Visually Hidden */
         .visually-hidden {
             position: absolute;
             width: 1px;
@@ -801,9 +788,6 @@
 </head>
 
 <body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
     <!-- Image Modal -->
     <div class="modal" id="imageModal" role="dialog" aria-label="Image viewer">
         <span class="close-modal" onclick="closeModal()" aria-label="Close image viewer">&times;</span>
