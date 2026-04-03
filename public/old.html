@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House VR 3D Panorama</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background animation effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 150, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 255, 150, 0.05) 0%, transparent 50%);
+            animation: backgroundShift 15s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Grid background */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 150, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            z-index: 1;
+            margin: 100px auto 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header .logo {
+            width: 120px;
+            margin: 0 auto 30px;
+            display: block;
+            animation: fadeInDown 1s ease-out 0.2s backwards;
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .header .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff 0%, #5b86e5 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .house-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            list-style: none;
+        }
+
+        .house-item {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out backwards;
+            cursor: pointer;
+            display: block;
+        }
+
+        .house-item:nth-child(1) { animation-delay: 0.1s; }
+        .house-item:nth-child(2) { animation-delay: 0.2s; }
+        .house-item:nth-child(3) { animation-delay: 0.3s; }
+        .house-item:nth-child(4) { animation-delay: 0.4s; }
+        .house-item:nth-child(5) { animation-delay: 0.5s; }
+
+        /* Hover light effect */
+        .house-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .house-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Border light effect */
+        .house-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, #00d4ff, #5b86e5, #a855f7);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .house-item:hover::after {
+            opacity: 1;
+        }
+
+        .house-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 212, 255, 0.2),
+                0 0 60px rgba(0, 212, 255, 0.1),
+                inset 0 0 30px rgba(0, 212, 255, 0.05);
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .house-icon {
+            width: 100%;
+            height: 220px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.1));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .house-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.4s ease;
+            display: block;
+        }
+
+        .house-item:hover .house-icon img {
+            transform: scale(1.08);
+        }
+
+        .house-item:hover .house-icon {
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .house-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+            z-index: 1;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .house-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .house-desc {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .house-badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 6px 15px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #00d4ff;
+            text-align: center;
+            width: 100%;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header .logo {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .house-list {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .house-item {
+                padding: 20px;
+            }
+
+            .house-icon {
+                height: 180px;
+            }
+        }
+
+        /* Site footer (PTH) */
+        .pth-footer-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 48px auto 0;
+            z-index: 1;
+            padding: 32px 16px 24px;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+            background: rgba(10, 14, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .pth-footer-container .footer-content {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .pth-footer-container .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 28px 24px;
+            margin-bottom: 28px;
+        }
+
+        .pth-footer-container .footer-link-div .title-bold {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .pth-footer-container .footer-link-div .title-bold a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .pth-footer-container .footer-link-div .title-bold a:hover {
+            color: #00d4ff;
+        }
+
+        .pth-footer-container .footer-link-div ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pth-footer-container .footer-link-div li {
+            margin-bottom: 8px;
+        }
+
+        .pth-footer-container .footer-link-div a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .pth-footer-container .footer-link-div a:hover {
+            color: #00d4ff;
+        }
+
+        .pth-footer-container .footer-contact-info {
+            font-size: 0.9rem;
+        }
+
+        .pth-footer-container .footer-contact-info a {
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .pth-footer-container .footer-contact-btn-wrap {
+            margin-top: 10px;
+        }
+
+        .pth-footer-container a.footer-contact-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 8px;
+            color: #00d4ff;
+            font-size: 0.85rem;
+        }
+
+        .pth-footer-container a.footer-contact-btn:hover {
+            background: rgba(0, 212, 255, 0.25);
+        }
+
+        .pth-footer-container .footer-social-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .pth-footer-container .footer-social-icon img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            vertical-align: middle;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .pth-footer-container .footer-social-icon:hover img {
+            opacity: 1;
+        }
+
+        .pth-footer-container .footer-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .pth-footer-container .footer-bottom-left {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pth-footer-container .footer-logo {
+            height: 36px;
+            width: auto;
+            display: block;
+        }
+
+        .pth-footer-container .footer-bottom-right {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .pth-footer-container .footer-bottom-right a,
+        .pth-footer-container .footer-bottom-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .pth-footer-container .footer-bottom-right a:hover,
+        .pth-footer-container .footer-bottom-link:hover {
+            color: #00d4ff;
+        }
+
+        .pth-footer-container .footer-copyright {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .pth-footer-container .back-top {
+            user-select: none;
+        }
+
+        @media (max-width: 768px) {
+            .pth-footer-container .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+    <script>
+        window.okkiConfigs = window.okkiConfigs || [];
+        function okkiAdd() { okkiConfigs.push(arguments); };
+        okkiAdd("analytics", { siteId: "32254-29638", gId: "" });
+    </script>
+    <script async src="//tfile.xiaoman.cn/okki/analyze.js?id=32254-29638-"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAsCAMAAACNHNClAAABpFBMVEVHcEwAOogAQIAEOocCOocDO4YCOocBOYcCOocEPIcCOYcDOocCOYcBOoYCOocCOocCO4gCOYgAQIAAM4ACOocDO4cBOocCOocAOoUARosAM4ACOYYCO4gCO4cCO4gCOocAOosDOocEOocCOYcAPYYBOogCOocAO4kBOocCOocDO4cCOocDOYcDO4YCOocCOocDOoYDO4gCOYgCOoYAOIkAOYgAO4gCOocAOYcCOYcDO4YCOocCOocCOogCOocDOYYBOoYBOYgBOocAPYUCOYgCOocCO4gCOoYAOocCO4cAQIABOYcCO4YDOoYDOocCOYYDOogAOIcCOocCOocCOocCOocCOocAPIgDOYgANoMAN4kCO4cAOYcCOoYAOYQAN5ICOoYAM2YCOocBOogAVaoAOYQAN4UAPIYCOocAN4oCOocAPIcDOoYCOocDOocCO4YEOYcCOocCOocAOoYDOYUCOocEOYgCO4gBOYcDOogEO4UAOIYCOYcCOYcBOocCOoYAPYYBOocAgIAAOooCOocCOYgDOocAN4UCOocBOogCOocCOodiGezVAAAAi3RSTlMAPgxG/U6Qv4BAk8bVvnvw3pwICtNXtPcsCxRwpednnyzDQuc7tNIas/ZbmVFfo4TLVmvvKS082zF5Y6LliYhjq62xGW9zfnI1oQS2pV3FgU8g85H4m+MvXiEccSTNGw7gBfW8AzYXJqgl6hHJ6MKHSNSdOVpqR3qyWEU3Zoq9aRWsAiPOeFMulbrfgj4AUwAAAAlwSFlzAAALEgAACxIB0t1+/AAAAyxJREFUWEetmOV33DAQxNWmubODbcrMzMzMzMzMzMx4/3R1tLO29tarvOhL+yzN3M9rzUovziUV20hSVx+25fVVzv3B8oY+8w/7defKZuukbmIXVLziL9lP1lHKcS9ZK0wcyj9C2SWhwCwSpVJlsX5Rz5C6PtT8oI6SuNT8fWoLPUuEwrnfsJ8hoWA6iXnHqsyXMQrlF35rto6SxqJUy2Kuo9+1P2nxXImEvVYaswlrrr4s5n3rUZ4RSldxlsuGwevg921GwebyTr6Cj2h6VCGKtCB8xlLT7HTNRaxG+Sm/5CGhdBRmOVjQJ8KBxX+hzGBVCZX3Mbu7KECN+dIQGi/lOpFnFMpNoCwworyB5ImMgu+QnWcZyEP6hfPge1rwZeLGqeLcU0hux6GwXURucGCzl3UU2mfXgHK1ACX37jrKBPK9ZwzQJZBcaRGpVntFR1lCsgdGlFVA6ZZR8Iu5z6BnuZeM7xizfAYow0QUtr9isrwdvo/1A4M+O6vyawlFiYnaVgZh9oOOQrVeD8lbfaNXL2Z86FleB993+olOtlMhee/SJDf48ZcPrNQZgLoJvt/1OwBleQMkX3RJvmZ6gLbC95sNZTgUvfqFMehiOsoIMh5acBFtvuIYoPxQryNhP9WzfIKMPxVcc5oo7UD5qm10obOrATqb6RFsafBfyvJ4TH1UUAQSfrkMo9cG3x5flWBgmqyP49nnlpkrCxcjvlg4l5fB94XxXJ4DyatWKFJJMrd/YUEJvs8FFGnLd0FyV8xcWQbJpEJYsh++t3QUqvhoSG74N6XR4pBmj/UsrybfY8Zz+RxIfPyjhprlffCdpZ/L/i8O9cEOretRIJleESpXAGWb5Cs0goV4djISRW0rrF2VdBRK32EYru03ipDlnfDdYczyIkhGxqHo5/J8+LYbs3wIkj1xKHqAuuE7xYgyHZJxA4lyCr5jbW1lMBTL40h4OwyPBeY70ZjllUC5GInC2kqoXAPfTmOWj0CyJRJFzfJSzB4wZvk8JBv7jSJkuQe+i/Usk7gDkklxKHqW98J3szFAMyFpi0PRs9wJ32lGFPbBLwwkCvM9asnyf8zS764XVN4dAAAAAElFTkSuQmCC" alt="Logo" class="logo">
+            <h1>Pthhouse VR 3D Panorama</h1>
+            <p>Immersive Experience · 360° Panorama Display</p>
+        </div>
+
+        <ul class="house-list">
+            <a href="FLIP-A-L20/" class="house-item">
+                <div class="house-icon">
+                    <img src="image/a.png" alt="FLIP-A-L20">
+                </div>
+                <div class="house-name">FLIP-A-L20</div>
+                <div class="house-desc">Refined Layout · Panoramic Experience</div>
+                <div class="house-badge">Click to Enter →</div>
+            </a>
+
+            <a href="FLIP-B-H20/" class="house-item">
+                <div class="house-icon">
+                    <img src="image/b.png" alt="FLIP-B">
+                </div>
+                <div class="house-name">FLIP-B-H20</div>
+                <div class="house-desc">Classic Design · Immersive Browsing</div>
+                <div class="house-badge">Click to Enter →</div>
+            </a>
+
+            <a href="FLIP-Lite-H30/" class="house-item">
+                <div class="house-icon">
+                    <img src="image/lite.png" alt="FLIP-Lite-H30">
+                </div>
+                <div class="house-name">FLIP-Lite-H30</div>
+                <div class="house-desc">Light Luxury Style · 360° Exploration</div>
+                <div class="house-badge">Click to Enter →</div>
+            </a>
+
+            <a href="FLIP-MINI-H20/" class="house-item">
+                <div class="house-icon">
+                    <img src="image/mini.png" alt="FLIP-MINI-H20">
+                </div>
+                <div class="house-name">FLIP-MINI-H20</div>
+                <div class="house-desc">Mini Layout · Panoramic Display</div>
+                <div class="house-badge">Click to Enter →</div>
+            </a>
+
+            <a href="FLIP-MIX-H20/" class="house-item">
+                <div class="house-icon">
+                    <img src="image/mix.png" alt="FLIP-MIX-H20">
+                </div>
+                <div class="house-name">FLIP-MIX-H20</div>
+                <div class="house-desc">Mixed Style · Virtual Tour</div>
+                <div class="house-badge">Click to Enter →</div>
+            </a>
+        </ul>
+    </div>
+
+    <div class="pth-footer-container">
+        <div class="footer-content">
+            <div class="footer-links">
+                <div class="footer-link-div">
+                    <h3 class="title-bold"><a rel="nofollow" href="https://pthhouse.com/products/">Products</a></h3>
+                    <ul>
+                        <li><a href="https://pthhouse.com/product/detail/3">Container House</a></li>
+                        <li><a href="https://pthhouse.com/product/detail/2">Steel Structure</a></li>
+                        <li><a rel="nofollow" href="https://www.prefabx.com" target="_blank">PrefabX</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-div">
+                    <h3 class="title-bold"><a rel="nofollow" href="https://pthhouse.com/about/us/">About Us</a></h3>
+                    <ul>
+                        <li><a rel="nofollow" href="https://pthhouse.com/about/us">Who We Are</a></li>
+                        <li><a rel="nofollow" href="https://pthhouse.com/news">News &amp; Videos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-div">
+                    <h3 class="title-bold"><a rel="nofollow" href="https://pthhouse.com/cases">Cases</a></h3>
+                </div>
+                <div class="footer-link-div">
+                    <h3 class="title-bold"><a rel="nofollow" href="https://pthhouse.com/contact">Contact Us</a></h3>
+                    <div class="footer-contact-info">
+                        <a href="tel:+8657183513788">Tel:+86 571 8351 3788</a>
+                        <div><a href="mailto:inquiry@putianhouse.com">Email:inquiry@putianhouse.com</a></div>
+                        <div class="footer-contact-btn-wrap">
+                            <a class="footer-contact-btn" href="mailto:inquiry@putianhouse.com">Send Us an E-mail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-link-div">
+                    <h3 class="title-bold">Discover more here</h3>
+                    <div class="footer-social-icons">
+                        <a rel="nofollow" href="https://www.facebook.com/prefabhousepth/" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/facebook-icon.png" alt="Facebook"></a>
+                        <a rel="nofollow" href="https://www.tiktok.com/@prefabx" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/tiktok-icon.png" alt="TikTok"></a>
+                        <a rel="nofollow" href="https://www.linkedin.com/in/prefab-house-pth-099a2310b/" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/in-icon.png" alt="LinkedIn"></a>
+                        <a rel="nofollow" href="https://www.instagram.com/pthhouse_official/" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/instagram-icon.png" alt="Instagram"></a>
+                        <a rel="nofollow" href="https://www.youtube.com/channel/UCu7H0fVH-JVfzHPnnD2ygKA" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/youtube.png" alt="YouTube"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-left">
+                    <a href="/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAsCAMAAACNHNClAAABpFBMVEVHcEwAOogAQIAEOocCOocDO4YCOocBOYcCOocEPIcCOYcDOocCOYcBOoYCOocCOocCO4gCOYgAQIAAM4ACOocDO4cBOocCOocAOoUARosAM4ACOYYCO4gCO4cCO4gCOocAOosDOocEOocCOYcAPYYBOogCOocAO4kBOocCOocDO4cCOocDOYcDO4YCOocCOocDOoYDO4gCOYgCOoYAOIkAOYgAO4gCOocAOYcCOYcDO4YCOocCOocCOogCOocDOYYBOoYBOYgBOocAPYUCOYgCOocCO4gCOoYAOocCO4cAQIABOYcCO4YDOoYDOocCOYYDOogAOIcCOocCOocCOocCOocCOocAPIgDOYgANoMAN4kCO4cAOYcCOoYAOYQAN5ICOoYAM2YCOocBOogAVaoAOYQAN4UAPIYCOocAN4oCOocAPIcDOoYCOocDOocCO4YEOYcCOocCOocAOoYDOYUCOocEOYgCO4gBOYcDOogEO4UAOIYCOYcCOYcBOocCOoYAPYYBOocAgIAAOooCOocCOYgDOocAN4UCOocBOogCOocCOodiGezVAAAAi3RSTlMAPgxG/U6Qv4BAk8bVvnvw3pwICtNXtPcsCxRwpednnyzDQuc7tNIas/ZbmVFfo4TLVmvvKS082zF5Y6LliYhjq62xGW9zfnI1oQS2pV3FgU8g85H4m+MvXiEccSTNGw7gBfW8AzYXJqgl6hHJ6MKHSNSdOVpqR3qyWEU3Zoq9aRWsAiPOeFMulbrfgj4AUwAAAAlwSFlzAAALEgAACxIB0t1+/AAAAyxJREFUWEetmOV33DAQxNWmubODbcrMzMzMzMzMzMx4/3R1tLO29tarvOhL+yzN3M9rzUovziUV20hSVx+25fVVzv3B8oY+8w/7defKZuukbmIXVLziL9lP1lHKcS9ZK0wcyj9C2SWhwCwSpVJlsX5Rz5C6PtT8oI6SuNT8fWoLPUuEwrnfsJ8hoWA6iXnHqsyXMQrlF35rto6SxqJUy2Kuo9+1P2nxXImEvVYaswlrrr4s5n3rUZ4RSldxlsuGwevg921GwebyTr6Cj2h6VCGKtCB8xlLT7HTNRaxG+Sm/5CGhdBRmOVjQJ8KBxX+hzGBVCZX3Mbu7KECN+dIQGi/lOpFnFMpNoCwworyB5ImMgu+QnWcZyEP6hfPge1rwZeLGqeLcU0hux6GwXURucGCzl3UU2mfXgHK1ACX37jrKBPK9ZwzQJZBcaRGpVntFR1lCsgdGlFVA6ZZR8Iu5z6BnuZeM7xizfAYow0QUtr9isrwdvo/1A4M+O6vyawlFiYnaVgZh9oOOQrVeD8lbfaNXL2Z86FleB993+olOtlMhee/SJDf48ZcPrNQZgLoJvt/1OwBleQMkX3RJvmZ6gLbC95sNZTgUvfqFMehiOsoIMh5acBFtvuIYoPxQryNhP9WzfIKMPxVcc5oo7UD5qm10obOrATqb6RFsafBfyvJ4TH1UUAQSfrkMo9cG3x5flWBgmqyP49nnlpkrCxcjvlg4l5fB94XxXJ4DyatWKFJJMrd/YUEJvs8FFGnLd0FyV8xcWQbJpEJYsh++t3QUqvhoSG74N6XR4pBmj/UsrybfY8Zz+RxIfPyjhprlffCdpZ/L/i8O9cEOretRIJleESpXAGWb5Cs0goV4djISRW0rrF2VdBRK32EYru03ipDlnfDdYczyIkhGxqHo5/J8+LYbs3wIkj1xKHqAuuE7xYgyHZJxA4lyCr5jbW1lMBTL40h4OwyPBeY70ZjllUC5GInC2kqoXAPfTmOWj0CyJRJFzfJSzB4wZvk8JBv7jSJkuQe+i/Usk7gDkklxKHqW98J3szFAMyFpi0PRs9wJ32lGFPbBLwwkCvM9asnyf8zS764XVN4dAAAAAElFTkSuQmCC" class="footer-logo" alt="Putian House"></a>
+                    <span class="footer-copyright">2001-2024 Zhejiang Putian Integrated Housing Co., Ltd. All Rights Reserved</span>
+                </div>
+                <div class="footer-bottom-right">
+                    <a href="https://pthhouse.com/privacy-policy/" target="_blank" rel="nofollow">Privacy Policy</a>
+                    <a href="#" class="footer-bottom-link" id="pth-footer-back-top"><span class="back-top">Top ↑</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('pth-footer-back-top')?.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add mouse follow effect
+        document.addEventListener('mousemove', (e) => {
+            const items = document.querySelectorAll('.house-item');
+            items.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                item.style.setProperty('--mouse-x', `${x}px`);
+                item.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+</html>
+
