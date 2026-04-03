@@ -408,6 +408,10 @@
             padding: 24px;
             text-align: center;
             background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 140px;
         }
         .model-name {
             font-family: 'Cinzel', serif;
@@ -439,6 +443,7 @@
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
             letter-spacing: 0.5px;
             min-height: 44px;
+            margin-top: auto;
         }
         .view-vr:hover {
             transform: translateY(-2px) scale(1.05);
@@ -829,7 +834,7 @@
                     </div>
                     <div class="model-info">
                         <h3 class="model-name">FLIP-A-L20</h3>
-                        <p class="model-desc">Refined Layout · Panoramic Experience</p>
+                        <p class="model-desc">Refined Layout</p>
                         <a href="FLIP-A-L20/" class="view-vr">Click to Enter →</a>
                     </div>
                 </article>
@@ -894,7 +899,7 @@
                     </div>
                 </div>
             </div>
-            <div class="hyper-experience-col">
+            <div class="hyper-experience-col"> 
                 <div class="gallery-item" onclick="openModal('image/3dvr/8.jpg')" role="button" tabindex="0">
                     <img src="image/3dvr/8.jpg" alt="Hyper Experience Center VR view 8">
                 </div>
