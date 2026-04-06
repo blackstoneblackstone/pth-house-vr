@@ -311,6 +311,20 @@
             transform: translateY(-1px);
         }
 
+        /* 底部居中固定 CTA（滚动时始终停在视口中间偏下） */
+        .float-book-cta {
+            position: fixed;
+            left: 50%;
+            bottom: max(24px, env(safe-area-inset-bottom, 0px));
+            transform: translateX(-50%);
+            z-index: 998;
+            pointer-events: none;
+        }
+        .float-book-cta .cta-btn {
+            pointer-events: auto;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), 0 0 24px var(--cta-glow);
+        }
+
         /* Container */
         .container {
             max-width: 1400px;
@@ -711,26 +725,172 @@
             width: 100%;
             margin-top: 8px;
         }
-
-        /* Footer - Dark Theme */
-        footer {
-            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-            color: var(--text-secondary);
-            text-align: center;
-            padding: 40px 24px;
-            margin: 40px auto 0;
-            border-top: 1px solid var(--border);
+        .booking-form button[type="submit"]:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
         }
-        .footer-text {
-            font-size: 14px;
-            line-height: 2;
-            text-align: center;
-            max-width: 800px;
+        .booking-form-status {
+            width: 100%;
+            max-width: 600px;
             margin: 0 auto;
-            opacity: 0.9;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            text-align: center;
+            display: none;
         }
-        .footer-text p {
-            margin: 4px 0;
+        .booking-form-status.is-visible {
+            display: block;
+        }
+        .booking-form-status--success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.45);
+            color: #86efac;
+        }
+        .booking-form-status--error {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        /* Site footer (PTH) — aligned with pthhouse.com */
+        footer[role="contentinfo"] {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        .pth-footer-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 48px auto 0;
+            z-index: 1;
+            padding: 32px 24px 24px;
+            box-sizing: border-box;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+            background: rgba(10, 14, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 16px 16px 0 0;
+        }
+        .pth-footer-container .footer-content {
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .pth-footer-container .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 28px 24px;
+            margin-bottom: 28px;
+        }
+        .pth-footer-container .footer-link-div .title-bold {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .pth-footer-container .footer-link-div .title-bold a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .pth-footer-container .footer-link-div .title-bold a:hover {
+            color: #00d4ff;
+        }
+        .pth-footer-container .footer-link-div ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .pth-footer-container .footer-link-div li {
+            margin-bottom: 8px;
+        }
+        .pth-footer-container .footer-link-div a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .pth-footer-container .footer-link-div a:hover {
+            color: #00d4ff;
+        }
+        .pth-footer-container .footer-contact-info {
+            font-size: 0.9rem;
+        }
+        .pth-footer-container .footer-contact-info a {
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .pth-footer-container .footer-contact-btn-wrap {
+            margin-top: 10px;
+        }
+        .pth-footer-container a.footer-contact-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 8px;
+            color: #00d4ff;
+            font-size: 0.85rem;
+        }
+        .pth-footer-container a.footer-contact-btn:hover {
+            background: rgba(0, 212, 255, 0.25);
+        }
+        .pth-footer-container .footer-social-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .pth-footer-container .footer-social-icon img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            vertical-align: middle;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+        .pth-footer-container .footer-social-icon:hover img {
+            opacity: 1;
+        }
+        .pth-footer-container .footer-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .pth-footer-container .footer-bottom-left {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+        .pth-footer-container .footer-logo {
+            height: 36px;
+            width: auto;
+            display: block;
+        }
+        .pth-footer-container .footer-bottom-right {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+        }
+        .pth-footer-container .footer-bottom-right a,
+        .pth-footer-container .footer-bottom-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .pth-footer-container .footer-bottom-right a:hover,
+        .pth-footer-container .footer-bottom-link:hover {
+            color: #00d4ff;
+        }
+        .pth-footer-container .footer-copyright {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .pth-footer-container .back-top {
+            user-select: none;
         }
 
         /* Responsive Design */
@@ -774,6 +934,10 @@
             .logo {
                 font-size: 22px;
             }
+            .pth-footer-container .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
 
         /* Reduced Motion */
@@ -814,7 +978,7 @@
             <div class="models-grid" role="list">
                 <article class="model-card" role="listitem">
                     <div class="model-thumb">
-                        <img src="image/3dvr/1.jpg" alt="FLIP-A-L20 Prefab House - Modern A-frame design with panoramic windows" loading="lazy">
+                        <img src="image/a.png" alt="FLIP-A-L20 Prefab House - Modern A-frame design with panoramic windows" loading="lazy">
                     </div>
                     <div class="model-info">
                         <h3 class="model-name">FLIP-A-L20</h3>
@@ -824,7 +988,7 @@
                 </article>
                 <article class="model-card" role="listitem">
                     <div class="model-thumb">
-                        <img src="image/3dvr/2.jpg" alt="FLIP-B-H20 Prefab House - Classic two-story modular home design" loading="lazy">
+                        <img src="image/b.png" alt="FLIP-B-H20 Prefab House - Classic two-story modular home design" loading="lazy">
                     </div>
                     <div class="model-info">
                         <h3 class="model-name">FLIP-B-H20</h3>
@@ -834,7 +998,7 @@
                 </article>
                 <article class="model-card" role="listitem">
                     <div class="model-thumb">
-                        <img src="image/3dvr/3.jpg" alt="FLIP-Lite-H30 Prefab House - Lightweight luxury prefab home" loading="lazy">
+                        <img src="image/lite.png" alt="FLIP-Lite-H30 Prefab House - Lightweight luxury prefab home" loading="lazy">
                     </div>
                     <div class="model-info">
                         <h3 class="model-name">FLIP-Lite-H30</h3>
@@ -844,7 +1008,7 @@
                 </article>
                 <article class="model-card" role="listitem">
                     <div class="model-thumb">
-                        <img src="image/3dvr/4.jpg" alt="FLIP-MINI-H20 Prefab House - Compact minimalist design for small spaces" loading="lazy">
+                        <img src="image/mini.png" alt="FLIP-MINI-H20 Prefab House - Compact minimalist design for small spaces" loading="lazy">
                     </div>
                     <div class="model-info">
                         <h3 class="model-name">FLIP-MINI-H20</h3>
@@ -854,7 +1018,7 @@
                 </article>
                 <article class="model-card" role="listitem">
                     <div class="model-thumb">
-                        <img src="image/3dvr/5.jpg" alt="FLIP-MIX-H20 Prefab House - Mixed style modular home combination" loading="lazy">
+                        <img src="image/mix.png" alt="FLIP-MIX-H20 Prefab House - Mixed style modular home combination" loading="lazy">
                     </div>
                     <div class="model-info">
                         <h3 class="model-name">FLIP-MIX-H20</h3>
@@ -878,9 +1042,6 @@
             <div class="hyper-experience-col">
                 <div class="gallery-item gallery-item--with-book" onclick="openModal('image/3dvr/7.jpg')" role="button" tabindex="0">
                     <img src="image/3dvr/7.jpg" alt="Hyper Experience Center VR view 7">
-                    <div class="book-now-overlay">
-                        <a href="#booking" class="cta-btn" onclick="event.stopPropagation()">Book Now</a>
-                    </div>
                 </div>
             </div>
             <div class="hyper-experience-col"> 
@@ -974,29 +1135,93 @@
     <section id="booking" class="container booking-section" aria-labelledby="booking-title">
         <h2 id="booking-title" class="section-title">Book Your Factory & Experience Center Visit</h2>
         <p class="section-desc">Fill in the form below to schedule your on-site or virtual visit with our team</p>
-        <form class="booking-form" action="/submit-booking" method="POST">
+        <div id="booking-form-status" class="booking-form-status" role="status" aria-live="polite"></div>
+        <form id="booking-form" class="booking-form" action="#" method="post">
             <input type="text" name="fullname" placeholder="Your Full Name" required aria-label="Full Name" autocomplete="name">
             <input type="text" name="company" placeholder="Company Name" required aria-label="Company Name" autocomplete="organization">
             <input type="email" name="email" placeholder="Email Address" required aria-label="Email Address" autocomplete="email">
             <input type="tel" name="phone" placeholder="Phone / WhatsApp Number" required aria-label="Phone Number" autocomplete="tel">
             <input type="date" name="visitdate" required aria-label="Visit Date">
-            <button class="cta-btn" type="submit">Submit Booking Request</button>
+            <button class="cta-btn" type="submit" id="booking-form-submit">Submit Booking Request</button>
         </form>
     </section>
     </main>
 
-    <!-- Footer -->
+    <div class="float-book-cta">
+        <a href="#booking" class="cta-btn">Book Now</a>
+    </div>
+
+    <!-- Footer (PTH 官网同款) -->
     <footer role="contentinfo">
-        <div class="footer-text">
-            <p><strong>Wuhu Putian Construction Technology Co., Ltd.</strong></p>
-            <p>Address: Xinwu Economic Development Zone, Wuhu, Anhui, China</p>
-            <p>Tel/WhatsApp: +86 123 4567 8910 | Email: info@pthouse.com</p>
-            <p style="margin-top: 15px;">Copyright © 2026 PTHouse. All Rights Reserved.</p>
+        <div class="pth-footer-container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <div class="footer-link-div">
+                        <h3 class="title-bold"><a rel="nofollow" href="https://pthhouse.com/products/">Products</a></h3>
+                        <ul>
+                            <li><a href="https://pthhouse.com/product/detail/3">Container House</a></li>
+                            <li><a href="https://pthhouse.com/product/detail/2">Steel Structure</a></li>
+                            <li><a rel="nofollow" href="https://www.prefabx.com" target="_blank">PrefabX</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-link-div">
+                        <h3 class="title-bold"><a rel="nofollow" href="https://pthhouse.com/about/us/">About Us</a></h3>
+                        <ul>
+                            <li><a rel="nofollow" href="https://pthhouse.com/about/us">Who We Are</a></li>
+                            <li><a rel="nofollow" href="https://pthhouse.com/news">News &amp; Videos</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-link-div">
+                        <h3 class="title-bold"><a rel="nofollow" href="https://pthhouse.com/cases">Cases</a></h3>
+                    </div>
+                    <div class="footer-link-div">
+                        <h3 class="title-bold"><a rel="nofollow" href="https://pthhouse.com/contact">Contact Us</a></h3>
+                        <div class="footer-contact-info">
+                            <a href="tel:+8657183513788">Tel:+86 571 8351 3788</a>
+                            <div><a href="mailto:inquiry@putianhouse.com">Email:inquiry@putianhouse.com</a></div>
+                            <div class="footer-contact-btn-wrap">
+                                <a class="footer-contact-btn" href="mailto:inquiry@putianhouse.com">Send Us an E-mail</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-link-div">
+                        <h3 class="title-bold">Discover more here</h3>
+                        <div class="footer-social-icons">
+                            <a rel="nofollow" href="https://www.facebook.com/prefabhousepth/" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/facebook-icon.png" alt="Facebook"></a>
+                            <a rel="nofollow" href="https://www.tiktok.com/@prefabx" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/tiktok-icon.png" alt="TikTok"></a>
+                            <a rel="nofollow" href="https://www.linkedin.com/in/prefab-house-pth-099a2310b/" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/in-icon.png" alt="LinkedIn"></a>
+                            <a rel="nofollow" href="https://www.instagram.com/pthhouse_official/" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/instagram-icon.png" alt="Instagram"></a>
+                            <a rel="nofollow" href="https://www.youtube.com/channel/UCu7H0fVH-JVfzHPnnD2ygKA" class="footer-social-icon"><img src="https://prefabx-cdn.oss-cn-beijing.aliyuncs.com/assets/youtube.png" alt="YouTube"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="footer-bottom-left">
+                        <a href="/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAsCAMAAACNHNClAAABpFBMVEVHcEwAOogAQIAEOocCOocDO4YCOocBOYcCOocEPIcCOYcDOocCOYcBOoYCOocCOocCO4gCOYgAQIAAM4ACOocDO4cBOocCOocAOoUARosAM4ACOYYCO4gCO4cCO4gCOocAOosDOocEOocCOYcAPYYBOogCOocAO4kBOocCOocDO4cCOocDOYcDO4YCOocCOocDOoYDO4gCOYgCOoYAOIkAOYgAO4gCOocAOYcCOYcDO4YCOocCOocCOogCOocDOYYBOoYBOYgBOocAPYUCOYgCOocCO4gCOoYAOocCO4cAQIABOYcCO4YDOoYDOocCOYYDOogAOIcCOocCOocCOocCOocCOocAPIgDOYgANoMAN4kCO4cAOYcCOoYAOYQAN5ICOoYAM2YCOocBOogAVaoAOYQAN4UAPIYCOocAN4oCOocAPIcDOoYCOocDOocCO4YEOYcCOocCOocAOoYDOYUCOocEOYgCO4gBOYcDOogEO4UAOIYCOYcCOYcBOocCOoYAPYYBOocAgIAAOooCOocCOYgDOocAN4UCOocBOogCOocCOodiGezVAAAAi3RSTlMAPgxG/U6Qv4BAk8bVvnvw3pwICtNXtPcsCxRwpednnyzDQuc7tNIas/ZbmVFfo4TLVmvvKS082zF5Y6LliYhjq62xGW9zfnI1oQS2pV3FgU8g85H4m+MvXiEccSTNGw7gBfW8AzYXJqgl6hHJ6MKHSNSdOVpqR3qyWEU3Zoq9aRWsAiPOeFMulbrfgj4AUwAAAAlwSFlzAAALEgAACxIB0t1+/AAAAyxJREFUWEetmOV33DAQxNWmubODbcrMzMzMzMzMzMx4/3R1tLO29tarvOhL+yzN3M9rzUovziUV20hSVx+25fVVzv3B8oY+8w/7defKZuukbmIXVLziL9lP1lHKcS9ZK0wcyj9C2SWhwCwSpVJlsX5Rz5C6PtT8oI6SuNT8fWoLPUuEwrnfsJ8hoWA6iXnHqsyXMQrlF35rto6SxqJUy2Kuo9+1P2nxXImEvVYaswlrrr4s5n3rUZ4RSldxlsuGwevg921GwebyTr6Cj2h6VCGKtCB8xlLT7HTNRaxG+Sm/5CGhdBRmOVjQJ8KBxX+hzGBVCZX3Mbu7KECN+dIQGi/lOpFnFMpNoCwworyB5ImMgu+QnWcZyEP6hfPge1rwZeLGqeLcU0hux6GwXURucGCzl3UU2mfXgHK1ACX37jrKBPK9ZwzQJZBcaRGpVntFR1lCsgdGlFVA6ZZR8Iu5z6BnuZeM7xizfAYow0QUtr9isrwdvo/1A4M+O6vyawlFiYnaVgZh9oOOQrVeD8lbfaNXL2Z86FleB993+olOtlMhee/SJDf48ZcPrNQZgLoJvt/1OwBleQMkX3RJvmZ6gLbC95sNZTgUvfqFMehiOsoIMh5acBFtvuIYoPxQryNhP9WzfIKMPxVcc5oo7UD5qm10obOrATqb6RFsafBfyvJ4TH1UUAQSfrkMo9cG3x5flWBgmqyP49nnlpkrCxcjvlg4l5fB94XxXJ4DyatWKFJJMrd/YUEJvs8FFGnLd0FyV8xcWQbJpEJYsh++t3QUqvhoSG74N6XR4pBmj/UsrybfY8Zz+RxIfPyjhprlffCdpZ/L/i8O9cEOretRIJleESpXAGWb5Cs0goV4djISRW0rrF2VdBRK32EYru03ipDlnfDdYczyIkhGxqHo5/J8+LYbs3wIkj1xKHqAuuE7xYgyHZJxA4lyCr5jbW1lMBTL40h4OwyPBeY70ZjllUC5GInC2kqoXAPfTmOWj0CyJRJFzfJSzB4wZvk8JBv7jSJkuQe+i/Usk7gDkklxKHqW98J3szFAMyFpi0PRs9wJ32lGFPbBLwwkCvM9asnyf8zS764XVN4dAAAAAElFTkSuQmCC" class="footer-logo" alt="Putian House"></a>
+                        <span class="footer-copyright">2001-2024 Zhejiang Putian Integrated Housing Co., Ltd. All Rights Reserved</span>
+                    </div>
+                    <div class="footer-bottom-right">
+                        <a href="https://pthhouse.com/privacy-policy/" target="_blank" rel="nofollow">Privacy Policy</a>
+                        <a href="#" class="footer-bottom-link" id="pth-footer-back-top"><span class="back-top">Top ↑</span></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script>
+        /**
+         * 与主站 React useSubmitInfo 一致：POST /inquiry/create
+         * body: { ...values, preferred, country, productInfo }
+         * 部署在子域时需设置 PTH_INQUIRY_CONFIG.apiBase 为主站 origin（并确保后端 CORS）。
+         */
+        window.PTH_INQUIRY_CONFIG = window.PTH_INQUIRY_CONFIG || {
+            apiBase: '',
+            country: 'CN',
+            productInfoSetting: { source: 'pth-vr-tour', page: 'index' }
+        };
+
         // Modal functions
         function openModal(imgSrc) {
             const modal = document.getElementById('imageModal');
@@ -1021,6 +1246,83 @@
                 closeModal();
             }
         });
+
+        document.getElementById('pth-footer-back-top')?.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        (function initBookingInquiryForm() {
+            var form = document.getElementById('booking-form');
+            var statusEl = document.getElementById('booking-form-status');
+            var submitBtn = document.getElementById('booking-form-submit');
+            if (!form || !statusEl || !submitBtn) return;
+
+            function showStatus(kind, text) {
+                statusEl.textContent = text;
+                statusEl.className = 'booking-form-status booking-form-status--' + kind + ' is-visible';
+            }
+            function clearStatus() {
+                statusEl.textContent = '';
+                statusEl.className = 'booking-form-status';
+            }
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                clearStatus();
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                var cfg = window.PTH_INQUIRY_CONFIG || {};
+                var params = new URLSearchParams(window.location.search);
+                var code = params.get('code') || params.get('preferred') || undefined;
+
+                var fd = new FormData(form);
+                var values = {
+                    fullname: (fd.get('fullname') || '').toString().trim(),
+                    company: (fd.get('company') || '').toString().trim(),
+                    email: (fd.get('email') || '').toString().trim(),
+                    phone: (fd.get('phone') || '').toString().trim(),
+                    visitdate: (fd.get('visitdate') || '').toString().trim()
+                };
+
+                var payload = Object.assign({}, values, {
+                    preferred: code,
+                    country: cfg.country != null ? cfg.country : 'CN',
+                    productInfo: JSON.stringify(cfg.productInfoSetting || { source: 'pth-vr-tour' })
+                });
+
+                var url = '//prefabx.com/api/inquiry/create';
+
+                submitBtn.disabled = true;
+                try {
+                    var res = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                        credentials: 'include'
+                    });
+                    var data = null;
+                    try {
+                        data = await res.json();
+                    } catch (err) {
+                        data = null;
+                    }
+                    if (res.ok && data && data.success) {
+                        showStatus('success', 'Submitted successfully. We will contact you soon.');
+                        form.reset();
+                        return;
+                    }
+                    showStatus('error', (data && data.message) ? String(data.message) : 'Submit failed. Please try again later.');
+                } catch (err) {
+                    showStatus('error', 'Network error. Please check your connection or API address.');
+                } finally {
+                    submitBtn.disabled = false;
+                }
+            });
+        })();
 
         // YouTube lazy loading
         (function initYoutubePosters() {
