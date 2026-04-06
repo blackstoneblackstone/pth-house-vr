@@ -1218,7 +1218,7 @@
                 <div class="booking-form-row">
                     <div class="booking-field booking-form-col-24">
                         <label class="booking-form-label" for="booking-countryState">Country / State</label>
-                        <input type="text" id="booking-countryState" name="countryState" placeholder="Country, state or region" autocomplete="address-level1" aria-label="Country or state">
+                        <input type="text" id="booking-countryState" name="country" placeholder="Country, state or region" autocomplete="address-level1" aria-label="Country or state">
                     </div>
                 </div>
             </div>
@@ -1298,7 +1298,6 @@
          */
         window.PTH_INQUIRY_CONFIG = window.PTH_INQUIRY_CONFIG || {
             apiBase: '/api/pth',
-            country: 'CN',
             productType: 'vr-pth'
         };
 
@@ -1367,12 +1366,10 @@
                     phoneNumber: (fd.get('phoneNumber') || '').toString().trim(),
                     eMail: (fd.get('eMail') || '').toString().trim(),
                     companyName: (fd.get('companyName') || '').toString().trim(),
-                    countryState: (fd.get('countryState') || '').toString().trim()
+                    country: (fd.get('country') || '').toString().trim()
                 };
 
                 var payload = Object.assign({}, values, {
-                    preferred: code,
-                    country: cfg.country != null ? cfg.country : 'CN',
                     productType: 'vr-pth'
                 });
 
