@@ -1211,6 +1211,12 @@
                 </div>
                 <div class="booking-form-row">
                     <div class="booking-field booking-form-col-24">
+                        <label class="booking-form-label" for="booking-companyName">Company name</label>
+                        <input type="text" id="booking-companyName" name="companyName" placeholder="Company name" autocomplete="organization" aria-label="Company name">
+                    </div>
+                </div>
+                <div class="booking-form-row">
+                    <div class="booking-field booking-form-col-24">
                         <label class="booking-form-label" for="booking-countryState">Country / State</label>
                         <input type="text" id="booking-countryState" name="countryState" placeholder="Country, state or region" autocomplete="address-level1" aria-label="Country or state">
                     </div>
@@ -1291,9 +1297,9 @@
          * 部署在子域时需设置 PTH_INQUIRY_CONFIG.apiBase 为主站 origin（并确保后端 CORS）。
          */
         window.PTH_INQUIRY_CONFIG = window.PTH_INQUIRY_CONFIG || {
-            apiBase: '/api',
+            apiBase: '/api/pth',
             country: 'CN',
-            productInfoSetting: { source: 'pth-vr-tour', page: 'index' }
+            productType: 'vr-pth'
         };
 
         // Modal functions
@@ -1360,6 +1366,7 @@
                     lastName: (fd.get('lastName') || '').toString().trim(),
                     phoneNumber: (fd.get('phoneNumber') || '').toString().trim(),
                     eMail: (fd.get('eMail') || '').toString().trim(),
+                    companyName: (fd.get('companyName') || '').toString().trim(),
                     countryState: (fd.get('countryState') || '').toString().trim()
                 };
 
