@@ -691,28 +691,69 @@
             border: 1px solid var(--border);
         }
         .booking-form {
-            max-width: 600px;
+            max-width: 920px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
+            gap: 20px;
+            align-items: stretch;
+        }
+        .booking-form-grid {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
             gap: 16px;
-            align-items: center;
+        }
+        .booking-form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+            align-items: flex-start;
+        }
+        .booking-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+        .booking-form-col-8 {
+            flex: 1 1 calc(33.333% - 14px);
+            min-width: 140px;
+        }
+        .booking-form-col-12 {
+            flex: 1 1 calc(50% - 10px);
+            min-width: 200px;
+        }
+        .booking-form-col-24 {
+            flex: 1 1 100%;
+        }
+        .booking-form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: left;
         }
         .booking-form input,
-        .booking-form input[type="date"] {
-            padding: 16px 20px;
+        .booking-form select {
+            padding: 14px 18px;
             border: 2px solid var(--border);
             border-radius: var(--radius-md);
             font-size: 15px;
             color: var(--text-primary);
             width: 100%;
-            text-align: center;
+            text-align: left;
             font-family: inherit;
             transition: all var(--transition-fast);
             background: var(--bg-secondary);
+            box-sizing: border-box;
+        }
+        .booking-form select {
+            cursor: pointer;
+            appearance: auto;
         }
         .booking-form input:focus,
-        .booking-form input[type="date"]:focus {
+        .booking-form select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.15);
@@ -732,7 +773,7 @@
         }
         .booking-form-status {
             width: 100%;
-            max-width: 600px;
+            max-width: 920px;
             margin: 0 auto;
             padding: 12px 16px;
             border-radius: var(--radius-md);
@@ -1137,11 +1178,44 @@
         <p class="section-desc">Fill in the form below to schedule your on-site or virtual visit with our team</p>
         <div id="booking-form-status" class="booking-form-status" role="status" aria-live="polite"></div>
         <form id="booking-form" class="booking-form" action="#" method="post">
-            <input type="text" name="fullname" placeholder="Your Full Name" required aria-label="Full Name" autocomplete="name">
-            <input type="text" name="company" placeholder="Company Name" required aria-label="Company Name" autocomplete="organization">
-            <input type="email" name="email" placeholder="Email Address" required aria-label="Email Address" autocomplete="email">
-            <input type="tel" name="phone" placeholder="Phone / WhatsApp Number" required aria-label="Phone Number" autocomplete="tel">
-            <input type="date" name="visitdate" required aria-label="Visit Date">
+            <div class="booking-form-grid">
+                <div class="booking-form-row">
+                    <div class="booking-field booking-form-col-8">
+                        <label class="booking-form-label" for="booking-title">Title</label>
+                        <select id="booking-title" name="title" required aria-label="Title">
+                            <option value="" disabled selected>Title</option>
+                            <option value="Dr">Dr</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Ms">Ms</option>
+                            <option value="Mrs">Mrs</option>
+                        </select>
+                    </div>
+                    <div class="booking-field booking-form-col-8">
+                        <label class="booking-form-label" for="booking-firstName">First name</label>
+                        <input type="text" id="booking-firstName" name="firstName" placeholder="First name" required autocomplete="given-name" aria-label="First name">
+                    </div>
+                    <div class="booking-field booking-form-col-8">
+                        <label class="booking-form-label" for="booking-lastName">Last name</label>
+                        <input type="text" id="booking-lastName" name="lastName" placeholder="Last name" required autocomplete="family-name" aria-label="Last name">
+                    </div>
+                </div>
+                <div class="booking-form-row">
+                    <div class="booking-field booking-form-col-12">
+                        <label class="booking-form-label" for="booking-phoneNumber">Phone number</label>
+                        <input type="tel" id="booking-phoneNumber" name="phoneNumber" placeholder="Phone number" required autocomplete="tel" aria-label="Phone number">
+                    </div>
+                    <div class="booking-field booking-form-col-12">
+                        <label class="booking-form-label" for="booking-eMail">Email</label>
+                        <input type="email" id="booking-eMail" name="eMail" placeholder="Email" required autocomplete="email" aria-label="Email">
+                    </div>
+                </div>
+                <div class="booking-form-row">
+                    <div class="booking-field booking-form-col-24">
+                        <label class="booking-form-label" for="booking-countryState">Country / State</label>
+                        <input type="text" id="booking-countryState" name="countryState" placeholder="Country, state or region" autocomplete="address-level1" aria-label="Country or state">
+                    </div>
+                </div>
+            </div>
             <button class="cta-btn" type="submit" id="booking-form-submit">Submit Booking Request</button>
         </form>
     </section>
@@ -1217,7 +1291,7 @@
          * 部署在子域时需设置 PTH_INQUIRY_CONFIG.apiBase 为主站 origin（并确保后端 CORS）。
          */
         window.PTH_INQUIRY_CONFIG = window.PTH_INQUIRY_CONFIG || {
-            apiBase: '',
+            apiBase: 'https://prefabx.com/api',
             country: 'CN',
             productInfoSetting: { source: 'pth-vr-tour', page: 'index' }
         };
@@ -1281,11 +1355,12 @@
 
                 var fd = new FormData(form);
                 var values = {
-                    fullname: (fd.get('fullname') || '').toString().trim(),
-                    company: (fd.get('company') || '').toString().trim(),
-                    email: (fd.get('email') || '').toString().trim(),
-                    phone: (fd.get('phone') || '').toString().trim(),
-                    visitdate: (fd.get('visitdate') || '').toString().trim()
+                    title: (fd.get('title') || '').toString().trim(),
+                    firstName: (fd.get('firstName') || '').toString().trim(),
+                    lastName: (fd.get('lastName') || '').toString().trim(),
+                    phoneNumber: (fd.get('phoneNumber') || '').toString().trim(),
+                    eMail: (fd.get('eMail') || '').toString().trim(),
+                    countryState: (fd.get('countryState') || '').toString().trim()
                 };
 
                 var payload = Object.assign({}, values, {
@@ -1294,7 +1369,8 @@
                     productInfo: JSON.stringify(cfg.productInfoSetting || { source: 'pth-vr-tour' })
                 });
 
-                var url = '//prefabx.com/api/inquiry/create';
+                var base = (cfg.apiBase || '').replace(/\/$/, '');
+                var url = base ? base + '/inquiry/create' : '/inquiry/create';
 
                 submitBtn.disabled = true;
                 try {
