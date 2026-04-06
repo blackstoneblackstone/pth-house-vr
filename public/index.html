@@ -1373,7 +1373,7 @@
                 var payload = Object.assign({}, values, {
                     preferred: code,
                     country: cfg.country != null ? cfg.country : 'CN',
-                    productInfo: JSON.stringify(cfg.productInfoSetting || { source: 'pth-vr-tour' })
+                    productType: 'vr-pth'
                 });
 
                 var base = (cfg.apiBase || '').replace(/\/$/, '');
