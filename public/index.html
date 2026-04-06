@@ -1362,11 +1362,11 @@
                 var values = {
                     title: (fd.get('title') || '').toString().trim(),
                     firstName: (fd.get('firstName') || '').toString().trim(),
-                    lastName: (fd.get('lastName') || '').toString().trim(),
+                    surname: (fd.get('lastName') || '').toString().trim(),
                     phoneNumber: (fd.get('phoneNumber') || '').toString().trim(),
                     eMail: (fd.get('eMail') || '').toString().trim(),
                     companyName: (fd.get('companyName') || '').toString().trim(),
-                    country: (fd.get('country') || '').toString().trim()
+                    companyLocation: (fd.get('country') || '').toString().trim()
                 };
 
                 var payload = Object.assign({}, values, {
