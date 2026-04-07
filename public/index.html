@@ -273,7 +273,6 @@
             object-fit: contain;
         }
         .logo {
-            font-family: 'Cinzel', serif;
             font-size: 28px;
             font-weight: 700;
             letter-spacing: 2px;
@@ -332,7 +331,6 @@
             padding: 0 24px;
         }
         .section-title {
-            font-family: 'Cinzel', serif;
             font-size: clamp(28px, 4vw, 42px);
             color: var(--text-primary);
             margin-bottom: 16px;
@@ -415,7 +413,6 @@
             min-height: 140px;
         }
         .model-name {
-            font-family: 'Cinzel', serif;
             font-size: 20px;
             color: var(--text-primary);
             margin-bottom: 8px;
@@ -1010,11 +1007,11 @@
     <!-- Main Content -->
     <main id="main-content">
         <!-- H1 for SEO (visually hidden but accessible) -->
-        <h1 class="visually-hidden">PTHouse VR Tour - Prefab House Models Virtual Showroom</h1>
+        <h1 class="visually-hidden">PTH VR Tour - Prefab House Models Virtual Showroom</h1>
 
         <!-- VR Models Section -->
         <section class="container models-section" aria-labelledby="models-title">
-            <h2 id="models-title" class="section-title">Pthhouse VR 3D Panorama</h2>
+            <h2 id="models-title" class="section-title">Pth VR 3D Panorama</h2>
             <p class="section-desc">Immersive Experience · 360° Panorama Display</p>
             <div class="models-grid" role="list">
                 <article class="model-card" role="listitem">
@@ -1370,7 +1367,11 @@
                 };
 
                 var payload = Object.assign({}, values, {
-                    productType: ['vr-pth']
+                    productType: ['vr-pth'],
+                    knowFrom: 'vr-pth',
+                    locationOfProject: 'vr-pth',
+                    companyWeb: 'vr-pth',
+                    position: 'vr-pth'
                 });
 
                 var base = (cfg.apiBase || '').replace(/\/$/, '');
